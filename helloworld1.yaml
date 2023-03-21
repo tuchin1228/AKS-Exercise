@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod #種類，常用有Pod、Service、Deployment
+metadata: 
+  name: helloworld #Pod名稱
+  labels:
+    app: demoApp #給Pod一個標籤，service的Selector尋找Pod的記號
+spec:
+  containers:
+    - name: helloworld #容器名稱
+      image: w5151381guy/helloworld #映像檔，預設找Docker Hub
+      imagePullPolicy: IfNotPresent #更新頻率，假如本地有image就不進行更新
+      ports:
+        - containerPort: 8080 #開放容器內的Port號
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-service
+spec:
+  selector:
+    app: demoApp #需與Pod的Labels一樣，才能連結
+  type: LoadBalancer #設定才能在AKS中建立一個公用IP
+  ports:
+    - targetPort: 8080 #Pod裡的服務運行的port
+      name: port8080
+      port: 88 #外部連線的port，公用IP:port
+      
+  
+  

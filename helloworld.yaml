@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+  labels:
+    app: helloworld-deploy
+spec:
+  replicas: 1 #要啟用幾個服務
+  selector:
+    matchLabels: #需與template中的labels相同
+      app: helloworld 
+  template: #pod內容
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: helloworld #容器名稱
+        image: w5151381guy/helloworld #映像檔，預設找Docker Hub
+        imagePullPolicy: IfNotPresent #更新頻率，假如本地有image就不進行更新
+        resources: #用在hpa
+          requests: #基本保留cpu占用量
+            cpu: "0.5"
+          limits: #超過會把Pod砍掉，代表可能需要調整機器效能
+            cpu: "1"
+        ports:
+          - containerPort: 8080 #開放容器內的Port號
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-service
+spec:
+  selector:
+    app: helloworld #需與Pod的Labels一樣，才能連結
+  type: LoadBalancer #設定才能在AKS中建立一個公用IP
+  ports:
+    - targetPort: 8080 #Pod裡的服務運行的port
+      name: port8080
+      port: 88 #外部連線的port，公用IP:port
+      

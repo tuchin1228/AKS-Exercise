@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appdemo-deployment
+  labels:
+    app: appdemo-deploy
+spec:
+  replicas: 1 #要啟用幾個服務
+  selector:
+    matchLabels: #需與template中的labels相同
+      app: appdemo-app 
+  template: #pod內容
+    metadata:
+      labels:
+        app: appdemo-app 
+    spec:
+      containers:
+      - name: backend-app  #容器名稱
+        image: jhinwei1228/applydemo:latest #映像檔，預設找Docker Hub
+        imagePullPolicy: Always #更新頻率，每次更新
+        # imagePullPolicy: IfNotPresent #更新頻率，假如本地有image就不進行更新
+        ports:
+          - containerPort: 80 #開放容器內的Port號
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appdemo-service
+spec:
+  selector:
+    app: appdemo-app  #需與Pod的Labels一樣，才能連結
+  clusterIP: 10.0.120.40
+  clusterIPs:
+    - 10.0.120.40
+  type: LoadBalancer
+  ports:
+    - targetPort: 80 #Pod裡的服務運行的port
+      name: port8080
+      port: 80 #外部連線的port，公用IP:port

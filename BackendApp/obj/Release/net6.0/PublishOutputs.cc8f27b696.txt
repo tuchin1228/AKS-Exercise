@@ -1,0 +1,7 @@
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Docker\publish\BackendApp.exe
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Docker\publish\appsettings.Development.json
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Docker\publish\appsettings.json
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Docker\publish\BackendApp.dll
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Docker\publish\BackendApp.deps.json
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Docker\publish\BackendApp.runtimeconfig.json
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Docker\publish\BackendApp.pdb
