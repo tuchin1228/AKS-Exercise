@@ -15,5 +15,24 @@ namespace BackendApp.Controllers
                 result = "Test"
             });
         }
+
+        [HttpGet("test2")]
+        public IActionResult Get2()
+        {
+            return Ok(new
+            {
+                result = "Test2"
+            });
+        }
+
+
+        //[HttpGet("test2")]
+        //public IActionResult Get3()
+        //{
+        //    return Ok(new
+        //    {
+        //        result = "Test3"
+        //    });
+        //}
     }
 }

@@ -6,7 +6,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
   <PropertyGroup>
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA4pURmNwKhkaY3o5wUPzVnQAAAAACAAAAAAAQZgAAAAEAACAAAAAFrrxF3HUVFYKpcWz03oMbVXZPZwWnIDRirPsa+hXvbgAAAAAOgAAAAAIAACAAAABMWqbUeQf+/7fB1oTKSs+JFBeAvxd6Boms6ucfh5N5hSAAAAAvXPFQ3jgnHBizkUOufd2mBsibRJWsDzjmo1247y8OZ0AAAACvJuL53zjd5EZnoPAewejtNColc1NclDlVmOQTCcgOg30PMKdpI6UGhFNsnXViSes+DaTdWVhHaz/8t2gVpGPd</EncryptedPassword>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <History>True|2023-03-17T06:35:19.6230749Z;</History>
-    <LastFailureDetails />
+    <History>True|2023-03-24T07:55:00.1013323Z;True|2023-03-24T11:50:43.1033152+08:00;True|2023-03-24T09:49:01.4618709+08:00;True|2023-03-24T09:41:42.0823920+08:00;True|2023-03-24T09:20:33.1992379+08:00;False|2023-03-24T09:16:04.1826048+08:00;True|2023-03-22T14:13:49.5911256+08:00;True|2023-03-22T13:38:01.4149864+08:00;False|2023-03-22T13:29:50.2315438+08:00;True|2023-03-22T11:53:15.2777397+08:00;True|2023-03-17T14:35:19.6230749+08:00;</History>
+    <LastFailureDetails>
+    </LastFailureDetails>
   </PropertyGroup>
 </Project>

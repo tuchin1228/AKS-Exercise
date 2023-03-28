@@ -30,12 +30,42 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
+  # annotations:
+  #   service.beta.kubernetes.io/azure-load-balancer-ipv4: 20.18.208.19
 spec:
   selector:
-    app: dotnet-backend-app #需與Pod的Labels一樣，才能連結
-  type: LoadBalancer #設定才能在AKS中建立一個公用IP
+    app: dotnet-backend-app #需與Pod的Labels一樣，才能連結P
+  type: ClusterIP  #設定才能在AKS中建立一個公用IP
   ports:
     - targetPort: 80 #Pod裡的服務運行的port
       name: port8080
       port: 80 #外部連線的port，公用IP:port
-      
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+spec:
+  rules:
+   - host: 3b8.site
+     http:
+       paths:
+       - path: /backend
+         pathType: Prefix
+         backend:
+           service:
+             name: backend-service
+             port:
+               number: 80
+
+# - http:
+#     paths:
+#     - path: /
+#       pathType: Exact 
+#       backend:
+#         service:
+#           name: backend-service
+#           port:
+#             number: 80    

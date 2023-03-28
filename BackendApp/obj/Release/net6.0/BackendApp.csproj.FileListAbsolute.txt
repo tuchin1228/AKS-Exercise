@@ -29,3 +29,8 @@ C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Release\net6.0\refint\BackendApp
 C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Release\net6.0\BackendApp.pdb
 C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Release\net6.0\BackendApp.genruntimeconfig.cache
 C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Release\net6.0\ref\BackendApp.dll
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\bin\Release\net6.0\System.Net.Http.Formatting.dll
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\bin\Release\net6.0\System.Web.Http.dll
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\bin\Release\net6.0\Newtonsoft.Json.dll
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\bin\Release\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\waynetu\Desktop\k8sdemo\BackendApp\obj\Release\net6.0\BackendApp.csproj.CopyComplete
