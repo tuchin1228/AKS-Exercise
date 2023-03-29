@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-deployment
+  labels:
+    app: ingress-deploy
+spec:
+  replicas: 1 #要啟用幾個服務
+  selector:
+    matchLabels: #需與template中的labels相同
+      app: ingress-app
+  template: #pod內容
+    metadata:
+      labels:
+        app: ingress-app
+    spec:
+      containers:
+      - name: ingress-app #容器名稱
+        image: jhinwei1228/routeexercise #映像檔，預設找Docker Hub
+        imagePullPolicy: Always #更新頻率，假如本地有image就不進行更新
+        # resources: #用在hpa
+        #   requests: #基本保留cpu占用量
+        #     cpu: "0.5"
+        #   limits: #超過會把Pod砍掉，代表可能需要調整機器效能
+        #     cpu: "1"
+        ports:
+          - containerPort: 80 #開放容器內的Port號
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  # annotations:
+  #   service.beta.kubernetes.io/azure-load-balancer-ipv4: 20.18.208.19
+spec:
+  selector:
+    app: ingress-app #需與Pod的Labels一樣，才能連結P
+  # type: LoadBalancer  #設定才能在AKS中建立一個公用IP
+  type: ClusterIP #設定才能在AKS中建立一個公用IP
+  ports:
+    - targetPort: 80 #Pod裡的服務運行的port
+      name: port80
+      port: 80 #外部連線的port，公用IP:port
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+spec:
+  rules:
+   - host: 3b8.site
+     http:
+       paths:
+       - path: /backend
+         pathType: Prefix
+         backend:
+           service:
+             name: backend-service
+             port:
+               number: 80
