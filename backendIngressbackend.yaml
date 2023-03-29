@@ -52,17 +52,17 @@ spec:
   rules:
    - http:
        paths:
-        - path: /backend
+        - path: /backend/*
           pathType: Prefix
           backend:
             service:
               name: backend-service
               port:
                 number: 80
-        - path: /
-          pathType: Exact
-          backend:
-            service:
-              name: backend-service
-              port:
-                number: 80
+        # - path: /
+        #   pathType: Exact
+        #   backend:
+        #     service:
+        #       name: backend-service
+        #       port:
+        #         number: 80
