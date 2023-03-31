@@ -1,0 +1,220 @@
+#front-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend-deploy
+spec:
+  replicas: 1 #要啟用幾個服務
+  selector:
+    matchLabels: #需與template中的labels相同
+      app: frontend-app 
+  template: #pod內容
+    metadata:
+      labels:
+        app: frontend-app 
+    spec:
+      containers:
+      - name: frontend-app  #容器名稱
+        image: jhinwei1228/applydemo:latest #映像檔，預設找Docker Hub
+        imagePullPolicy: Always #更新頻率，每次更新
+        # imagePullPolicy: IfNotPresent #更新頻率，假如本地有image就不進行更新
+        ports:
+          - containerPort: 80 #開放容器內的Port號
+
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#front-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend-app  #需與Pod的Labels一樣，才能連結
+  type: LoadBalancer
+  ports:
+    - targetPort: 80 #Pod裡的服務運行的port
+      name: port8080
+      port: 80 #外部連線的port，公用IP:port
+
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#backend-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend-deploy
+spec:
+  replicas: 1 #要啟用幾個服務
+  selector:
+    matchLabels: #需與template中的labels相同
+      app: backend-app 
+  template: #pod內容
+    metadata:
+      labels:
+        app: backend-app 
+    spec:
+      containers:
+      - name: backend-app #容器名稱
+        image: jhinwei1228/backendapp #映像檔，預設找Docker Hub
+        imagePullPolicy: Always #更新頻率，假如本地有image就不進行更新
+        ports:
+          - containerPort: 80 #開放容器內的Port號
+
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#backend-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend-app #需與Pod的Labels一樣，才能連結
+  type: ClusterIP #設定才能在AKS中建立一個公用IP
+  ports:
+    - targetPort: 80 #Pod裡的服務運行的port
+      name: port8080
+      port: 80 #外部連線的port，公用IP:port
+      
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#payment-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-deployment
+  labels:
+    app: payment-deploy
+spec:
+  replicas: 1 #要啟用幾個服務
+  selector:
+    matchLabels: #需與template中的labels相同
+      app: payment-app 
+  template: #pod內容
+    metadata:
+      labels:
+        app: payment-app 
+    spec:
+      containers:
+      - name: payment-app #容器名稱
+        image: jhinwei1228/paymentapp #映像檔，預設找Docker Hub
+        imagePullPolicy: Always #更新頻率，假如本地有image就不進行更新
+        ports:
+          - containerPort: 80 #開放容器內的Port號
+
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#payment-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+spec:
+  selector:
+    app: payment-app #需與Pod的Labels一樣，才能連結
+  type: ClusterIP #設定才能在AKS中建立一個公用IP
+  ports:
+    - targetPort: 80 #Pod裡的服務運行的port
+      name: port8080
+      port: 80 #外部連線的port，公用IP:port
+
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#analyze-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analyze-deployment
+  labels:
+    app: analyze-deploy
+spec:
+  replicas: 1 #要啟用幾個服務
+  selector:
+    matchLabels: #需與template中的labels相同
+      app: analyze-app 
+  template: #pod內容
+    metadata:
+      labels:
+        app: analyze-app 
+    spec:
+      containers:
+      - name: analyze-app #容器名稱
+        image: jhinwei1228/analyzeapp #映像檔，預設找Docker Hub
+        imagePullPolicy: Always #更新頻率，假如本地有image就不進行更新
+        ports:
+          - containerPort: 80 #開放容器內的Port號
+
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#analyze-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: analyze-service
+spec:
+  selector:
+    app: analyze-app #需與Pod的Labels一樣，才能連結
+  type: ClusterIP #設定才能在AKS中建立一個公用IP
+  ports:
+    - targetPort: 80 #Pod裡的服務運行的port
+      name: port8080
+      port: 80 #外部連線的port，公用IP:port
+
+#--------------------------------------------------------------------------------
+---
+#--------------------------------------------------------------------------------
+
+#ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: application-nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+   - http:
+       paths:
+        - path: /backend/.*
+          pathType: Prefix
+          backend:
+            service:
+              name: backend-service
+              port:
+                number: 80
+        - path: /payment/.*
+          pathType: Prefix
+          backend:
+            service:
+              name: payment-service
+              port:
+                number: 80
+        - path: /analyze/.*
+          pathType: Prefix
+          backend:
+            service:
+              name: analyze-service
+              port:
+                number: 80
